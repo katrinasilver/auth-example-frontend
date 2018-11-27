@@ -1,18 +1,9 @@
-(function() {
-  'use strict';
 
-  // authe gate
-  request('/auth/token')
-  .then(function(response){
-    // user is logged in
-    document.querySelector('.user-id').innerHTML = response.data.id
-  })
-  .catch(function(error){
-    // user is not logged in
-    window.location = '/index.html'
-  })
+const { request } = require('./helpers')
 
+function addEventHandlers(){
 
+  // handle form
   document.querySelector('.form-signin').addEventListener('submit', function(event){
     event.preventDefault()
 
@@ -28,5 +19,22 @@
       document.querySelector('.message').innerHTML = 'You cannot access this resource'
     })
   })
+}
 
-})();
+
+function init(){
+  // auth gate
+  request('/auth/token')
+  .then(function(response){
+    // user is logged in
+    document.querySelector('.user-id').innerHTML = response.data.id
+  })
+  .catch(function(error){
+    // user is not logged in
+    window.location = '/index.html'
+  })
+
+  addEventHandlers()
+}
+
+module.exports = { init }

@@ -1,18 +1,25 @@
-(function() {
-  'use strict';
+const { request } = require('./helpers')
 
-  request('/auth/token')
-  .then(function(response){
-    // user is authenticated
+const images = ['hawks.png','lemurs.png','sharks.png','velociraptors.png'].map(e => `/img/${e}`)
 
+function setRandomImgSource(element, array){
+  let randomIndex = Math.floor(Math.random() * array.length)
+  const currentImage = `/img/${element.src.match(/\w*.png/)[0]}`
+
+  while(array[randomIndex] === currentImage){
+    randomIndex = Math.floor(Math.random() * array.length)
+  }
+
+  element.setAttribute('src', array[randomIndex])
+}
+
+function addEventHandlers(){
+  // handle click on logo to switch logos
+  document.querySelector('#logo').addEventListener('click', function(event){
+    setRandomImgSource(document.querySelector('#logo'), images)
   })
-  .catch(function(error){
-    // user is not authenticated
-  })
 
-
-
-  // login form
+  // handle login form
   document.querySelector('.form-signin').addEventListener('submit', function(event){
     event.preventDefault()
 
@@ -29,4 +36,21 @@
       document.querySelector('#error').classList.remove('hide-auth-error')
     })
   })
-})();
+}
+
+
+function init(){
+  setRandomImgSource(document.querySelector('#logo'), images)
+
+  addEventHandlers()
+}
+
+module.exports = { init }
+
+
+
+
+
+
+
+

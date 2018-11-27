@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 function request(path, method = 'get', body = null) {
   let bearerToken = ''
   const token = localStorage.getItem('token')
@@ -16,3 +18,5 @@ function request(path, method = 'get', body = null) {
     data: body
   })
 }
+
+module.exports = { request }
